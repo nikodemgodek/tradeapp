@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { FIREBASE_AUTH } from './authentication/firebase';
 
 import LoginScreen from './navigation/screens/LoginScreen';
+import RegisterScreen from './navigation/screens/RegisterScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -79,14 +80,27 @@ export default function App() {
   
   const [user, setUser] = useState(null);
   useEffect( () => {
-    const unsubscribe = auth.onAuthStateChanged(user => user ? setUser(true) : setUser(false));
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if(user) {
+        console.log("auth: ", user);
+        setUser(true);
+      } else {
+        setUser(false);
+      }
+    });
     return () => unsubscribe();
   }, [])
 
   return (
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
-          {user ? (<Stack.Screen name="MainContainer" component={MainContainer}/>) : (<Stack.Screen name="Login" component={LoginScreen} />)}
+          {user ? (<Stack.Screen name="MainContainer" component={MainContainer}/>) : 
+          (
+            <>
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Register" component={RegisterScreen} />
+            </>
+          )}
         </Stack.Navigator>
       </NavigationContainer>
   );

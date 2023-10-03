@@ -46,6 +46,7 @@ const MainContainer = () => {
             <Tab.Screen name={favoritiesName} component={FavoritiesScreen} />
             <Tab.Screen name={creationFormName} component={CreationScreen} />
             <Tab.Screen name={accountName} component={AccountScreen} />
+
         </Tab.Navigator>
     )
 }

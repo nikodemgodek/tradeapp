@@ -39,6 +39,10 @@ const LoginScreen = () => {
         Keyboard.dismiss();
     }
 
+    const handleRegisterNavigate = () => {
+        navigation.navigate('Register');
+    }
+
     return(
         <SafeAreaView style={{ flex: 1, justifyContent: 'center' , margin: 20,}}>
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -49,14 +53,20 @@ const LoginScreen = () => {
                 style={{ flex: 1}}
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                 <TouchableWithoutFeedback onPress={hideKeyboard}>
-                    <View style={{flex: 1}}>
-                        <Text style={{ fontSize: 32, fontWeight: 600, marginVertical: 15}}>Logowanie</Text>
+                    <View style={{flex: 1, marginHorizontal: 20}}>
+                        <Text style={{ fontSize: 32, fontWeight: 600, marginVertical: 15}}>Log In</Text>
                         <TextInput style={style.input} placeholder="Email" value={inputLogin} onChangeText={text => setInputLogin(text)}/>
-                        <TextInput style={style.input} placeholder="Hasło" value={inputPassword} onChangeText={text => setInputPassword(text)} secureTextEntry/>
-                        {errorMessage ? <Text style={style.error}>Niepoprawny login lub hasło.</Text> : null}
-                        <Button style={style.button} mode="contained" onPress={() => login(inputLogin, inputPassword)}>
-                            Zaloguj
-                        </Button>
+                        <TextInput style={style.input} placeholder="Password" value={inputPassword} onChangeText={text => setInputPassword(text)} secureTextEntry/>
+                        {errorMessage ? <Text style={style.error}>Login or password incorrect. Try again.</Text> : null}
+                        <View style={{ marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
+                            <Button style={style.button} mode="outlined" onPress={() => login(inputLogin, inputPassword)}>
+                                Login
+                            </Button>
+                            <Text style={{marginVertical: 10}}>or</Text>
+                            <Button style={style.button} mode="contained" onPress={() => handleRegisterNavigate()}>
+                                Create account
+                            </Button>
+                        </View>
                     </View>
                 </TouchableWithoutFeedback>
                 
@@ -75,8 +85,7 @@ const style = StyleSheet.create({
         width: '100%',
     },
     button : {
-        marginTop: 20,
-        marginHorizontal: 100,
+        width: '100%'
     },
     brandingText: {
         marginTop: 20,

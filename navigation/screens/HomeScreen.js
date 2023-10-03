@@ -30,6 +30,7 @@ const state = 2;
 const HomeScreen = ({navigation}) => {
 
     const auth = FIREBASE_AUTH;
+    console.log(auth.currentUser.uid);
 
     const navigate = useNavigation();
     const dummyItems = [
@@ -91,6 +92,7 @@ const HomeScreen = ({navigation}) => {
     const [searchInputClicked, setSearchInputClicked] = useState(false);
 
     const [firestoreDataItems, setFirestoreDataItems] = useState([]);
+    const [adverisements, setAdvertisements] = useState(firestoreDataItems);
 
     const removeFromRecentSearches = (txtToRemove) => {
     
@@ -118,9 +120,12 @@ const HomeScreen = ({navigation}) => {
         console.log('Searching');
         addToRecentSearches(searchInput);
 
-        navigation.navigate('Announcements')
+        const givenPhrase = searchInput.toLowerCase();
+        const firestoreDataItemsCopy = firestoreDataItems.filter(element => element.title.toLowerCase().includes(givenPhrase));
+        console.log(firestoreDataItemsCopy);
+        setAdvertisements(firestoreDataItemsCopy);
+        setSearchInputClicked(false);
 
-        //redirect to advertisements site and search elements.
     }
 
     const signOut = () => {
@@ -135,6 +140,7 @@ const HomeScreen = ({navigation}) => {
             const data = querySnapshot.docs.map(doc => ( { id: doc.id, ...doc.data() }));
 
             setFirestoreDataItems(data);
+            setAdvertisements(firestoreDataItems);
 
         } catch(error) {
             console.error('Failed to fetch data from firestore collection', error);
@@ -165,6 +171,10 @@ const HomeScreen = ({navigation}) => {
             displayName: 'Nikodem Godek',
             photoURL: 'https://static.prsa.pl/images/90f30d6e-915a-46a2-b860-6fb270ede5b6.jpg',
         })
+    }
+
+    const handleCancelButton = () => {
+        console.log('dupa');
     }
 
     return(
@@ -200,6 +210,16 @@ const HomeScreen = ({navigation}) => {
                 )
             : null }
 
+            {!isLoading && !searchInputClicked && adverisements.length === 0 ? 
+            (
+                
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                        <Icon size="100" name="eye" type="entypo"/>
+                        <Text style={{fontSize: 32, fontWeight: 600}}>Nie znaleziono ogłoszenia.</Text>
+                        <Text style={{fontSize: 32, fontWeight: 600}}>Chętnie to dla Ciebie znajdę.</Text>
+                    </View>
+            ) : null }
+
             {isLoading ? <ActivityIndicator color="indigo" size="large" style={{ flex: 1, alignContent: 'center', justifyContent: 'center',}} /> : null }
 
             {!isLoading && !searchInputClicked ?
@@ -207,13 +227,13 @@ const HomeScreen = ({navigation}) => {
                 <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                             contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 15 }}>
                                 
-                    { firestoreDataItems.map( (item, index) => (
+                    { adverisements.map( (item, index) => (
                         <Item key={item.id} img={item.img} title={item.title} price={item.price} location={item.location} timestamp={null} />
                     )) }
                 </ScrollView>
                 ) 
             : null }
-            
+
             {!isLoading && searchInputClicked && recentSearch.length === 0 ?
                 (
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
