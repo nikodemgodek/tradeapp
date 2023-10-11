@@ -179,9 +179,9 @@ const HomeScreen = ({navigation}) => {
 
     return(
         <SafeAreaView style={{ flex: 1 }}>
-            <View style={{ marginTop: 0, marginHorizontal: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderRadius: 8, padding: 10,}}>
-                <Text style={{ fontSize: 22, fontWeight: 600}}>Dzień dobry, {auth.currentUser ? auth.currentUser.displayName : 'Gościu'}</Text>
-                <Icon name="cog" type="entypo" />
+            <View style={{ marginTop: 0, marginHorizontal: 10, flexDirection: 'column', alignItems: 'flex-start', borderRadius: 8, padding: 10,}}>
+                <Text style={{ fontSize: 16, fontWeight: 600}}>Dzień dobry,</Text>
+                <Text style={{ fontSize: 22, fontWeight: 600}}>{auth.currentUser ? auth.currentUser.displayName : 'Gościu'}</Text>
             </View>
         
             <Search
@@ -209,16 +209,6 @@ const HomeScreen = ({navigation}) => {
                     </View>
                 )
             : null }
-
-            {!isLoading && !searchInputClicked && adverisements.length === 0 ? 
-            (
-                
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                        <Icon size="100" name="eye" type="entypo"/>
-                        <Text style={{fontSize: 32, fontWeight: 600}}>Nie znaleziono ogłoszenia.</Text>
-                        <Text style={{fontSize: 32, fontWeight: 600}}>Chętnie to dla Ciebie znajdę.</Text>
-                    </View>
-            ) : null }
 
             {isLoading ? <ActivityIndicator color="indigo" size="large" style={{ flex: 1, alignContent: 'center', justifyContent: 'center',}} /> : null }
 

@@ -3,6 +3,7 @@ import { FIRESTORE_DB } from '../../authentication/firebase';
 import { FIREBASE_AUTH } from '../../authentication/firebase';
 import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import { ActivityIndicator } from 'react-native';
+import { Icon } from 'react-native-elements';
 
 import Item from '../../components/advertisements/Item';
 import { addDoc, collection,  serverTimestamp } from 'firebase/firestore';
@@ -65,6 +66,15 @@ const FavoritiesScreen = () => {
 
             {isLoading ? <ActivityIndicator color="indigo" size="large" style={{ flex: 1, alignContent: 'center', justifyContent: 'center',}} /> : null }
             
+            {!isLoading && dummyItems.length === 5 ?
+                (
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <Icon size="100" name="eye" type="entypo"/>
+                    <Text style={{fontSize: 32, fontWeight: 600}}>Nie znaleziono ogłoszenia.</Text>
+                    <Text style={{fontSize: 32, fontWeight: 600}}>Chętnie to dla Ciebie znajdę.</Text>
+                </View>
+                ) : null }
+
             {!isLoading ?
                 (
                     <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 15 }}>
@@ -74,6 +84,9 @@ const FavoritiesScreen = () => {
                     </ScrollView>
                 ) 
             : null }
+
+
+            
         </SafeAreaView>
     )
 }

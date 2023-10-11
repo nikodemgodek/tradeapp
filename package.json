@@ -24,6 +24,8 @@
     "react-native-elements": "^3.4.3",
     "react-native-gesture-handler": "~2.12.0",
     "react-native-grid-component": "^2.0.1",
+    "react-native-image-crop-picker": "^0.40.0",
+    "react-native-image-picker": "^7.0.1",
     "react-native-paper": "^5.10.4",
     "react-native-reanimated": "~3.3.0",
     "react-native-reanimated-carousel": "^3.5.1",

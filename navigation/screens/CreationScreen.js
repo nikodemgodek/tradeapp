@@ -6,19 +6,23 @@ import { useState } from 'react';
 import { FIRESTORE_DB } from '../../authentication/firebase';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import Carousel from 'react-native-reanimated-carousel';
-
 import { useNavigation } from '@react-navigation/native';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const CreationScreen = ({navigation}) => {
 
+    const [photosArray, setPhotosArray] = useState([]);
+    const width = Dimensions.get('window').width;
+    const navigate = useNavigation();
     const [formData, setFormData] = useState({ img: '', title: '', price: '', location: '', timestamp: null});
-    const [photosArray, setPhotosArray] = useState(null);
+    const slides = [
+        { id: 1, text: 'Slide 1', backgroundColor: 'lightblue' },
+        { id: 2, text: 'Slide 2', backgroundColor: 'lightgreen' },
+    ];
 
     const handleFormReset = () => {
         setFormData({ title: '', price: '', location: ''});
     }
-
-    const navigate = useNavigation();
 
     const handleItemAdd = async () => {
         try {
@@ -43,12 +47,20 @@ const CreationScreen = ({navigation}) => {
         }
     }
 
-    const slides = [
-        { id: 1, text: 'Slide 1', backgroundColor: 'lightblue' },
-        { id: 2, text: 'Slide 2', backgroundColor: 'lightgreen' },
-    ];
+    const openGallery = () => {
+        let options = {
+            storageOptions: {
+                path: 'image'
+            },
+        };
 
-    const width = Dimensions.get('window').width;
+        launchImageLibrary(options, response => {
+            if(!response.didCancel) {
+                setSelectedImages(response.assets);
+            }
+
+        })
+    }
 
     return(
         <SafeAreaView style={{ flex: 1, marginHorizontal: 5 }}>
@@ -56,7 +68,7 @@ const CreationScreen = ({navigation}) => {
             <View style={{ marginHorizontal: 15}}>
                 <TouchableOpacity>
                     <View style={style.photo}>
-                        <Icon size="30" name="upload" type="entypo" />
+                        <Icon size="30" name="upload" type="entypo" onPress={() => openGallery()} />
                     </View>
                 </TouchableOpacity>
                 {photosArray ? 
